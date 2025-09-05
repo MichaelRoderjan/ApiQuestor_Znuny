@@ -1,3 +1,6 @@
+const { getFormattedDateTime } = require('../utils/formatDateTime');
+
 exports.home = (req, res) => {
-    res.send('Olá, Bem vindo a página');
-}
+    const { hora, data } = getFormattedDateTime();
+    res.send(`<strong>A API foi aberta na data ${data}, as ${hora}</strong>`);
+};
