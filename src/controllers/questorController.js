@@ -2,11 +2,11 @@ const Firebird = require('node-firebird')
 
 // Configuração da conexão Firebird
 const options = {
-    host: '192.168.124.99',
-    port: 3050,
-    database: 'questor',
-    user: 'SYSDBA',
-    password: 'masterkey',
+    host: process.env.HOST,
+    port: process.env.PORT || process.env.PORT2,
+    database: process.env.DATABASE,
+    user: process.env.USER,
+    password: process.env.PASSWORD,
     lowercase_keys: true,
 };
 
@@ -29,17 +29,8 @@ const getContatos = (req, res) => {
             getLimitsText = "";
         }
 
-        if (tabela === 'all') {
-            getTable = `
-                SELECT ${getLimitsText} TRIM(RDB$RELATION_NAME) AS NOME_DAS_TABELAS
-                            FROM RDB$RELATIONS
-                            WHERE RDB$SYSTEM_FLAG = 0
-                            AND RDB$VIEW_BLR IS NULL
-                            ORDER BY RDB$RELATION_NAME;
-                `
-        } else {
-
-            //getLimitsText
+        //Modo Padrão
+        if (tabela === 'null') {
             getTable = `
                 SELECT ${getLimitsText}
 	                trib.codigoempresa,
@@ -54,12 +45,19 @@ const getContatos = (req, res) => {
                     contato.email_financeiro	
                 FROM pex_tributacao_empresas AS trib 
                 INNER JOIN pex_cadastroestab_contato AS contato
-                ON trib.codigoempresa = contato.cod_questor;
-            `;
+                ON trib.codigoempresa = contato.cod_questor;`;
+        } else if (tabela === 'all') {
+            getTable = `SELECT ${getLimitsText} TRIM(RDB$RELATION_NAME) AS NOME_DAS_TABELAS
+                            FROM RDB$RELATIONS
+                            WHERE RDB$SYSTEM_FLAG = 0
+                            AND RDB$VIEW_BLR IS NULL
+                            ORDER BY RDB$RELATION_NAME;`
+        } else {
+            getTable = `SELECT ${getLimitsText} * FROM ${tabela}`
         }
 
         query = getTable;
-                
+
         db.query(query, (err, result) => {
             db.detach(); //Libera a conexão com o banco de dados
 
@@ -72,6 +70,50 @@ const getContatos = (req, res) => {
     });
 };
 
+
+const getConsultaDados = (req, res) => {
+    Firebird.attach(options, function (err, db) {
+        const limit = parseInt(req.query.limit) || 0;
+        const consulta = req.query.consulta || 'null'
+        let getTable;
+        if (err) {
+            console.error('Erro ao conectar', err);
+            return res.status(500).json({ error: 'Erro ao conectar ao banco de dados' });
+        }
+
+        if (limit > 0) {
+            getLimitsText = ` FIRST ${limit} `
+        } else {
+            getLimitsText = "";
+        }
+
+        //Modo Padrão
+        if (consulta !== 'null') {
+            getTable = `
+                SELECT TRIM(RF.RDB$FIELD_NAME) AS COLUNA
+                FROM RDB$RELATION_FIELDS RF
+                WHERE RF.RDB$RELATION_NAME = '${consulta}'
+                ORDER BY RF.RDB$FIELD_POSITION;`;
+        } else {
+            getTable = `SELECT ${getLimitsText} TRIM(RDB$RELATION_NAME) AS NOME_DAS_TABELAS
+                            FROM RDB$RELATIONS
+                            WHERE RDB$SYSTEM_FLAG = 0
+                            AND RDB$VIEW_BLR IS NULL
+                            ORDER BY RDB$RELATION_NAME;`
+        }
+
+        db.query(getTable, (err, result) => {
+            db.detach(); //Libera a conexão com o banco de dados
+
+            if (err) {
+                console.error('Erro na consulta', err);
+                return res.status(500).json({ error: 'Erro ao executar a consulta SQL.' });
+            }
+            res.status(200).json(result);
+        });
+    });
+};
+
 module.exports = {
-    getContatos
+    getContatos, getConsultaDados
 };

@@ -1,3 +1,10 @@
 #troque o nome do arquivo '.envBackup' para '.env'
-EMAIL_USER=SEU_EMAIL
-EMAIL_PASS=SEU_SENHA
+EMAIL_USER=
+EMAIL_PASS=
+
+# Configuração do Servidor Questor
+HOST=
+PORT2=
+DATABASE=
+USER=
+PASSWORD=
