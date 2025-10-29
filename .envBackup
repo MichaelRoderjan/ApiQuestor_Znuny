@@ -1,4 +1,6 @@
-#troque o nome do arquivo '.envBackup' para '.env'
+# ****** Substitua .envBackup por .env ******
+
+# Email Responsável para Enviar Email
 EMAIL_USER=
 EMAIL_PASS=
 
@@ -8,3 +10,10 @@ PORT2=
 DATABASE=
 USER=
 PASSWORD=
+
+#Configuração do Servidor PostGreSQL
+HOST_POSTGRESQL=
+PORT_POSTGRESQL=
+DATABASE_POSTGRESQL=
+USER_POSTGRESQL=
+PASSWORD_POSTGRESQL=

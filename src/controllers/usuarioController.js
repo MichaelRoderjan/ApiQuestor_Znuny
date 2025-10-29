@@ -1,0 +1,50 @@
+const { adicionarUsuario, listarUsuarios, removerUsuarios, mostrarUsuario } = require('../models/usuarios.js');
+
+async function criarUsuario(req, res) {
+    const { login, grupo } = req.body
+    try {
+        const usuario = await adicionarUsuario(login, grupo);
+        res.status(201).json(usuario);
+    } catch (err) {
+        res.status(500).json({ error: 'Erro ao criar usuário' });
+    }
+}
+
+//Retorna todos os usuários
+async function obterUsuarios(req, res) {
+    try {
+        const usuarios = await listarUsuarios();
+        res.status(200).json(usuarios);
+    } catch (err) {
+        res.status(500).json({ error: 'Erro ao obter usuários' });
+    }
+}
+
+//Retorna um usuario pelo login
+async function obterUsuarioPorLogin(req, res) {
+    const { login } = req.params;
+    try {
+        const usuario = await mostrarUsuario(login);
+        res.status(200).json(usuario);
+    } catch (err) {
+        res.status(500).json({ error: 'Erro ao obter usuário' });
+    }
+}
+
+async function removerUsuario(req, res) {
+    const { id } = req.params;
+    try {
+        await removerUsuarios(id);
+        res.status(204).send();
+    } catch (err) {
+        res.status(500).json({ error: 'Erro ao remover usuário' });
+    }
+}
+
+
+module.exports = {
+    criarUsuario,
+    obterUsuarios,
+    removerUsuario,
+    obterUsuarioPorLogin
+};
