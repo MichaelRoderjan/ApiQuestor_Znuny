@@ -7,9 +7,9 @@ const {
 
 // Criar novo email
 async function criarEmail(req, res) {
-    const { email, senha } = req.body;
+    const { email, senha, grupo } = req.body;
     try {
-        const novoEmail = await adicionarEmails(email, senha);
+        const novoEmail = await adicionarEmails(email, senha, grupo);
         res.status(201).json(novoEmail);
     } catch (err) {
         console.error('Erro ao criar email:', err);

@@ -8,6 +8,8 @@ const pool = new Pool({
     database: process.env.DATABASE_POSTGRESQL,
     user: process.env.USER_POSTGRESQL,
     password: process.env.PASSWORD_POSTGRESQL,
+    sslmode: process.env.sslmode
+
 });
 
 /// Função para buscar dados de tributações + contatos

@@ -1,0 +1,20 @@
+#Data de Criação da API
+CREATION_DATE=28-10-2025
+
+# Email Responsável para Enviar Email
+EMAIL_USER=fiscal@roderjan.com.br
+EMAIL_PASS=MSfeMh2SiYEzR6LK
+
+# Configuração do Servidor Questor
+HOST_API='localhost'
+PORT_API='5432'
+DATABASE_API='postgres'
+USER_API='postgres'
+PASSWORD_API='postgres'
+
+#Configuração do Servidor PostGreSQL
+HOST_POSTGRESQL='192.168.124.197'
+PORT_POSTGRESQL='5432'
+DATABASE_POSTGRESQL='questor'
+USER_POSTGRESQL='USER_ZNUNY'
+PASSWORD_POSTGRESQL='V5}Z4.Z5V5}Z4.Z5'
