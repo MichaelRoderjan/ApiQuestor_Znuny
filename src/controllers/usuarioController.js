@@ -41,10 +41,22 @@ async function removerUsuario(req, res) {
     }
 }
 
+// ✅ Buscar email e senha de acordo com o usuário
+async function buscarEmailUsuario(req, res) {
+    const { login } = req.params;
+    try {
+        const resultado = await buscarEmailPorUsuario(login);
+        res.status(200).json(resultado);
+    } catch (err) {
+        console.error('Erro ao buscar email por usuário:', err);
+        res.status(500).json({ error: 'Erro ao buscar email do usuário' });
+    }
+}
 
 module.exports = {
     criarUsuario,
     obterUsuarios,
     removerUsuario,
-    obterUsuarioPorLogin
+    obterUsuarioPorLogin,
+    buscarEmailUsuario
 };

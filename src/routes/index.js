@@ -7,8 +7,7 @@ const homeController = require('../controllers/homeController');
 //Rotas GET
 router.get('/', homeController.home)
 router.get('/contatos', questorController.getContatos);
-// router.get('/consultaDados', questorController.getConsultaDados);
-// router.get('/pesquisaTabelaColuns', questorController.getPesquisaTabelaColuns);
+
 
 //Rotas POST
 router.post('/enviar-email', emailController.enviarEmail);

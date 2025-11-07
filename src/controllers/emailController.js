@@ -8,9 +8,6 @@ exports.enviarEmail = async (req, res) => {
     const getEmail = req.body.email || process.env.EMAIL_USER;
     const getPassword = req.body.password || process.env.EMAIL_PASS;
 
-    console.log('email: ', req.body.email)
-    console.log('password: ', req.body.password)
-
     const transporter = nodemailer.createTransport({
         host: 'mail.smtp2go.com',
         port: 465,

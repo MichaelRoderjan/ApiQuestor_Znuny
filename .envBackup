@@ -1,4 +1,5 @@
 # ****** Substitua .envBackup por .env ******
+CREATION_DATE=
 
 # Email Responsável para Enviar Email
 EMAIL_USER=

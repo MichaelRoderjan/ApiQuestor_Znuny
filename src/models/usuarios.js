@@ -1,14 +1,13 @@
 const { pool } = require('../database/connection.js');
-const { createTable } = require('../database/createTable.js');
+const { createTableUsuarios } = require('../database/createTable.js');
 
 // Função para inserir usuário
 async function adicionarUsuario(login, grupo) {
 
     // Garantir que a tabela exista antes de inserir
-    await createTable();
+    await createTableUsuarios();
 
     //Verificar se o usuário já está cadastrado
-
     const checkQuery = 'SELECT * FROM usuarios WHERE login = $1';
     const checkRes = await pool.query(checkQuery, [login]);
 
@@ -33,8 +32,11 @@ async function adicionarUsuario(login, grupo) {
 
 // Função para listar todos os usuários
 async function listarUsuarios() {
+
+    // Garantir que a tabela exista antes de inserir
+    await createTableUsuarios();
     try {
-        const res = await pool.query('SELECT * FROM usuarios ORDER BY id DESC');
+        const res = await pool.query('SELECT * FROM usuarios ORDER BY id_usuario DESC');
         return res.rows;
 
     } catch (error) {
@@ -46,8 +48,10 @@ async function listarUsuarios() {
 
 //Remover usuário pelo ID
 async function removerUsuarios(id) {
+    // Garantir que a tabela exista antes de inserir
+    await createTableUsuarios();
     try {
-        const res = await pool.query('DELETE FROM usuarios WHERE id = $1 RETURNING *', [id]);
+        const res = await pool.query('DELETE FROM usuarios WHERE id_usuario = $1 RETURNING *', [id]);
         return res.rows;
 
     } catch (error) {
@@ -58,6 +62,8 @@ async function removerUsuarios(id) {
 
 //Mostrar usuário pelo login
 async function mostrarUsuario(login) {
+    // Garantir que a tabela exista antes de inserir
+    await createTableUsuarios();
     try {
         const res = await pool.query('SELECT * FROM usuarios WHERE login = $1', [login]);
         return res.rows;
@@ -68,9 +74,26 @@ async function mostrarUsuario(login) {
     }
 }
 
+async function buscarEmailPorUsuario(login) {
+    const query = `
+    SELECT e.email, e.senha
+    FROM usuarios u
+    JOIN emails e ON u.email_id = e.id
+    WHERE u.login = $1;
+  `;
+
+    try {
+        const result = await pool.query(query, [login]);
+        return result.rows[0];
+    } catch (err) {
+        console.error('Erro ao buscar email do usuário:', err);
+    }
+}
+
 module.exports = {
     adicionarUsuario,
     listarUsuarios,
     removerUsuarios,
-    mostrarUsuario
+    mostrarUsuario,
+    buscarEmailPorUsuario
 };
