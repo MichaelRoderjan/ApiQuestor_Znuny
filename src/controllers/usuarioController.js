@@ -1,9 +1,9 @@
 const { adicionarUsuario, listarUsuarios, removerUsuarios, mostrarUsuario } = require('../models/usuarios.js');
 
 async function criarUsuario(req, res) {
-    const { login, grupo } = req.body
+    const { login, grupo, id_email } = req.body
     try {
-        const usuario = await adicionarUsuario(login, grupo);
+        const usuario = await adicionarUsuario(login, grupo, id_email);
         res.status(201).json(usuario);
     } catch (err) {
         res.status(500).json({ error: 'Erro ao criar usuário' });

@@ -3,6 +3,7 @@ const {
     listarEmails,
     removerEmails,
     mostrarEmails,
+    mostrarGrupoEmails,
 } = require('../models/emails.js');
 
 // Criar novo email
@@ -40,6 +41,18 @@ async function obterEmailPorLogin(req, res) {
     }
 }
 
+// Obter email por login
+async function obterGrupoPorEmail(req, res) {
+    const { grupo } = req.params;
+    try {
+        const email = await mostrarGrupoEmails(grupo);
+        res.status(200).json(email);
+    } catch (err) {
+        console.error('Erro ao obter email:', err);
+        res.status(500).json({ error: 'Erro ao obter email' });
+    }
+}
+
 // Remover email por ID
 async function removerEmail(req, res) {
     const { id } = req.params;
@@ -57,4 +70,5 @@ module.exports = {
     obterEmails,
     obterEmailPorLogin,
     removerEmail,
+    obterGrupoPorEmail
 };

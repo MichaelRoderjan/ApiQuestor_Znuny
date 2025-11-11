@@ -61,7 +61,18 @@ async function mostrarEmails(email_id) {
         return res.rows;
 
     } catch (error) {
-        console.error('Erro ao mostrar usuário:', error);
+        console.error('Erro ao mostrar Emails:', error);
+        throw error;
+    }
+}
+
+async function mostrarGrupoEmails(grupo) {
+    try {
+        const res = await pool.query('SELECT * FROM emails WHERE grupo = $1', [grupo]);
+        return res.rows;
+
+    } catch (error) {
+        console.error('Erro ao mostrar Grupo:', error);
         throw error;
     }
 }
@@ -75,4 +86,5 @@ module.exports = {
     listarEmails,
     removerEmails,
     mostrarEmails,
+    mostrarGrupoEmails
 };

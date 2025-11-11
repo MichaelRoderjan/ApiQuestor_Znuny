@@ -2,7 +2,7 @@ const { pool } = require('../database/connection.js');
 const { createTableUsuarios } = require('../database/createTable.js');
 
 // Função para inserir usuário
-async function adicionarUsuario(login, grupo) {
+async function adicionarUsuario(login, grupo, id_email) {
 
     // Garantir que a tabela exista antes de inserir
     await createTableUsuarios();
@@ -16,12 +16,12 @@ async function adicionarUsuario(login, grupo) {
     }
 
     const query = `
-        INSERT INTO usuarios (login, grupo)
-        VALUES ($1, $2)
+        INSERT INTO usuarios (login, grupo, id_email)
+        VALUES ($1, $2, $3)
         RETURNING *;
     `;
     try {
-        const res = await pool.query(query, [login, grupo]);
+        const res = await pool.query(query, [login, grupo, id_email]);
         return res.rows[0];
 
     } catch (error) {
