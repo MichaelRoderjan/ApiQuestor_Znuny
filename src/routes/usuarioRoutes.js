@@ -1,6 +1,6 @@
 // routes/usuarioRoutes.js
 const express = require('express');
-const { criarUsuario, obterUsuarios, removerUsuario, obterUsuarioPorLogin, buscarEmailUsuario } = require('../controllers/usuarioController.js');
+const { criarUsuario, obterUsuarios, removerUsuario, obterUsuarioPorLogin, buscarEmailUsuario, buscarEmailSenhaUsuario } = require('../controllers/usuarioController.js');
 
 const router = express.Router();
 
@@ -9,8 +9,12 @@ router.post('/usuarios', criarUsuario);
 router.get('/usuarios', obterUsuarios);
 router.get('/usuarios/:login', obterUsuarioPorLogin);
 
-// Buscar email e senha vinculados a um usuário
+//Buscando apenas email
 router.get('/emails/usuario/:login', buscarEmailUsuario);
+
+//Buscando email e senha
+router.get('/emails/usuario/:login/senha', buscarEmailSenhaUsuario);
+
 
 router.delete('/usuarios/:id', removerUsuario);
 

@@ -76,10 +76,15 @@ async function mostrarUsuario(login) {
 
 async function buscarEmailPorUsuario(login) {
     const query = `
-    SELECT e.email, e.senha
-    FROM usuarios u
-    JOIN emails e ON u.email_id = e.id
-    WHERE u.login = $1;
+    SELECT
+        e.email,
+        e.senha
+    FROM
+        usuarios u
+    JOIN
+        emails e ON u.id_email = e.id_email
+    WHERE
+        u.login = $1;
   `;
 
     try {
@@ -90,10 +95,35 @@ async function buscarEmailPorUsuario(login) {
     }
 }
 
+
+async function buscarEmailSenhaPorUsuario(login) {
+    const query = `
+    SELECT 
+            u.login,
+            e.email,
+            e.senha
+        FROM 
+            usuarios u
+        JOIN 
+            emails e 
+        ON 
+            u.id_email = e.id_email
+        WHERE 
+            u.login = $1;`;
+
+    try {
+        const result = await pool.query(query, [login]);
+        return result.rows[0];
+    } catch (err) {
+        console.error('Erro ao buscar email e senha', err);
+    }
+}
+
 module.exports = {
     adicionarUsuario,
     listarUsuarios,
     removerUsuarios,
     mostrarUsuario,
-    buscarEmailPorUsuario
+    buscarEmailPorUsuario,
+    buscarEmailSenhaPorUsuario
 };

@@ -5,8 +5,8 @@ exports.enviarEmail = async (req, res) => {
     console.log(req)
     const { to, subject, text } = req.body;
     const destinatarios = Array.isArray(to) ? to : [to];
-    const getEmail = req.body.email || process.env.EMAIL_USER;
-    const getPassword = req.body.password || process.env.EMAIL_PASS;
+    const getEmail = req.body.email
+    const getPassword = req.body.password
 
     const transporter = nodemailer.createTransport({
         host: 'mail.smtp2go.com',
@@ -22,7 +22,7 @@ exports.enviarEmail = async (req, res) => {
         const resultados = await Promise.all(
             destinatarios.map(destinatario =>
                 transporter.sendMail({
-                    from: process.env.EMAIL_USER,
+                    from: getEmail,
                     to: destinatario,
                     subject,
                     text

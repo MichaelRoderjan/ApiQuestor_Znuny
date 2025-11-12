@@ -77,10 +77,6 @@ async function mostrarGrupoEmails(grupo) {
     }
 }
 
-//Busca Email e senha de acordo com Usuario
-
-
-
 module.exports = {
     adicionarEmails,
     listarEmails,

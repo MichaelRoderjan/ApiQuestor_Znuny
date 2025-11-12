@@ -1,4 +1,9 @@
-const { adicionarUsuario, listarUsuarios, removerUsuarios, mostrarUsuario } = require('../models/usuarios.js');
+const { adicionarUsuario,
+    listarUsuarios,
+    removerUsuarios,
+    mostrarUsuario,
+    buscarEmailPorUsuario,
+    buscarEmailSenhaPorUsuario } = require('../models/usuarios.js');
 
 async function criarUsuario(req, res) {
     const { login, grupo, id_email } = req.body
@@ -41,11 +46,23 @@ async function removerUsuario(req, res) {
     }
 }
 
-// ✅ Buscar email e senha de acordo com o usuário
+// Buscar email e senha de acordo com o usuário
 async function buscarEmailUsuario(req, res) {
     const { login } = req.params;
     try {
         const resultado = await buscarEmailPorUsuario(login);
+        res.status(200).json(resultado);
+    } catch (err) {
+        console.error('Erro ao buscar email por usuário:', err);
+        res.status(500).json({ error: 'Erro ao buscar email do usuário' });
+    }
+}
+
+// Buscar email e senha de acordo com o usuário
+async function buscarEmailSenhaUsuario(req, res) {
+    const { login } = req.params;
+    try {
+        const resultado = await buscarEmailSenhaPorUsuario(login);
         res.status(200).json(resultado);
     } catch (err) {
         console.error('Erro ao buscar email por usuário:', err);
@@ -58,5 +75,6 @@ module.exports = {
     obterUsuarios,
     removerUsuario,
     obterUsuarioPorLogin,
-    buscarEmailUsuario
+    buscarEmailUsuario,
+    buscarEmailSenhaUsuario
 };
