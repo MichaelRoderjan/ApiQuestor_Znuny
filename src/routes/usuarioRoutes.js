@@ -1,6 +1,11 @@
 // routes/usuarioRoutes.js
 const express = require('express');
-const { criarUsuario, obterUsuarios, removerUsuario, obterUsuarioPorLogin, buscarEmailUsuario, buscarEmailSenhaUsuario } = require('../controllers/usuarioController.js');
+const { criarUsuario,
+    obterUsuarios,
+    removerUsuario,
+    obterUsuarioPorLogin,
+    buscarEmailUsuario,
+    buscarEmailSenhaUsuario } = require('../controllers/usuarioController.js');
 
 const router = express.Router();
 

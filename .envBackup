@@ -6,11 +6,11 @@ EMAIL_USER=
 EMAIL_PASS=
 
 # Configuração do Servidor Questor
-HOST=
-PORT2=
-DATABASE=
-USER=
-PASSWORD=
+HOST_API=
+PORT_API=
+DATABASE_API=
+USER_API=
+PASSWORD_API=
 
 #Configuração do Servidor PostGreSQL
 HOST_POSTGRESQL=

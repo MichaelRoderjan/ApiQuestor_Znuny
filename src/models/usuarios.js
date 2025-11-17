@@ -63,9 +63,10 @@ async function removerUsuarios(id) {
 //Mostrar usuário pelo login
 async function mostrarUsuario(login) {
     // Garantir que a tabela exista antes de inserir
+    const getLogin = String(login)
     await createTableUsuarios();
     try {
-        const res = await pool.query('SELECT * FROM usuarios WHERE login = $1', [login]);
+        const res = await pool.query('SELECT * FROM usuarios WHERE login = $1', [getLogin]);
         return res.rows;
 
     } catch (error) {

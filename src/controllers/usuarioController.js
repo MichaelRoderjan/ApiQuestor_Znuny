@@ -28,12 +28,15 @@ async function obterUsuarios(req, res) {
 //Retorna um usuario pelo login
 async function obterUsuarioPorLogin(req, res) {
     const { login } = req.params;
-    try {
-        const usuario = await mostrarUsuario(login);
-        res.status(200).json(usuario);
-    } catch (err) {
-        res.status(500).json({ error: 'Erro ao obter usuário' });
-    }
+    /*  try {
+         const usuario = await mostrarUsuario(login);
+         res.status(200).json(usuario);
+     } catch (err) {
+         res.status(500).json({ error: 'Erro ao obter usuário', err });
+     } */
+
+    const usuario = await mostrarUsuario(login);
+    res.status(200).json(usuario);
 }
 
 async function removerUsuario(req, res) {
