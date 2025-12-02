@@ -20,7 +20,6 @@ router.get('/emails/usuario/:login', buscarEmailUsuario);
 //Buscando email e senha
 router.get('/emails/usuario/:login/senha', buscarEmailSenhaUsuario);
 
-
 router.delete('/usuarios/:id', removerUsuario);
 
 module.exports = router;

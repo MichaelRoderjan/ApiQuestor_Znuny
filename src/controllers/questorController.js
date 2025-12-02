@@ -8,13 +8,12 @@ const pool = new Pool({
     database: process.env.DATABASE_POSTGRESQL,
     user: process.env.USER_POSTGRESQL,
     password: process.env.PASSWORD_POSTGRESQL,
-    sslmode: process.env.sslmode
-
 });
 
 /// Função para buscar dados de tributações + contatos
 const getContatos = async (req, res) => {
     const limit = parseInt(req.query.limit) || 0;
+    const user = parseInt(req.query.user) || 0;
 
     let query = `
     SELECT
@@ -27,7 +26,9 @@ const getContatos = async (req, res) => {
       contato.email_dp,
       contato.email_societario,
       contato.email_dp_crt_experiencia,
-      contato.email_financeiro
+      contato.email_financeiro,
+      contato.cod_tareffa,
+      trib.inscrfederal 
     FROM pex_tributacao_empresas AS trib
     INNER JOIN pex_cadastroestab_contato AS contato
       ON trib.codigoempresa = contato.cod_questor
@@ -35,6 +36,9 @@ const getContatos = async (req, res) => {
 
     if (limit > 0) {
         query += ` LIMIT ${limit}`;
+    }
+    if (user > 0) {
+        query += `  WHERE codigoempresa= ${user}`;
     }
 
     try {
@@ -45,7 +49,6 @@ const getContatos = async (req, res) => {
         res.status(500).json({ error: 'Erro ao buscar tributações' });
     }
 };
-
 
 module.exports = {
     getContatos

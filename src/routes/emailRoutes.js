@@ -5,7 +5,8 @@ const {
   obterEmails,
   obterEmailPorLogin,
   removerEmail,
-  obterGrupoPorEmail
+  obterGrupoPorEmail,
+  obterEmailSenha
 } = require('../controllers/emailsController.js');
 
 const router = express.Router();
@@ -15,6 +16,10 @@ router.post('/emails', criarEmail);
 
 // Listar todos os emails
 router.get('/emails', obterEmails);
+
+
+//Lista email e senha dentro do .Env
+router.get('/emails_senha', obterEmailSenha);
 
 // Buscar um email específico pelo login
 router.get('/emails/:login', obterEmailPorLogin);

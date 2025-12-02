@@ -65,10 +65,24 @@ async function removerEmail(req, res) {
     }
 }
 
+// Obter email por login
+async function obterEmailSenha(req, res) {
+    try {
+        const email_user = process.env.EMAIL_USER
+        const email_pass = process.env.EMAIL_PASS
+        const getArray = [email_user, email_pass]
+        res.status(200).json(getArray);
+    } catch (err) {
+        console.error('Erro ao obter email e senha:', err);
+        res.status(500).json({ error: 'Erro ao obter email e senha' });
+    }
+}
+
 module.exports = {
     criarEmail,
     obterEmails,
     obterEmailPorLogin,
     removerEmail,
-    obterGrupoPorEmail
+    obterGrupoPorEmail,
+    obterEmailSenha
 };
