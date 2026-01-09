@@ -16,22 +16,24 @@ const getContatos = async (req, res) => {
     const user = parseInt(req.query.user) || 0;
 
     let query = `
-    SELECT
-      trib.codigoempresa,
-      contato.razao_social,
-      trib.caracteristica,
-      contato.email_geral,
-      contato.email_fiscal,
-      contato.email_contabil,
-      contato.email_dp,
-      contato.email_societario,
-      contato.email_dp_crt_experiencia,
-      contato.email_financeiro,
-      contato.cod_tareffa,
-      trib.inscrfederal 
-    FROM pex_tributacao_empresas AS trib
-    INNER JOIN pex_cadastroestab_contato AS contato
-      ON trib.codigoempresa = contato.cod_questor
+            SELECT 
+                contato.cod_tareffa, --Antiga trib.codigoempresa 
+                contato.razao_social, 
+                contato.tributacao, --Antiga trib.caracteristica
+                contato.email_geral, 
+                contato.email_fiscal, 
+                contato.email_contabil, 
+                contato.email_dp, 
+                contato.email_societario, 
+                contato.email_dp_crt_experiencia, 
+                contato.email_financeiro,
+                contato.cnpj_cpf, --Antiga trib.inscrfederal
+                eps.codigo_sindicato,
+                eps.nome_sindicato,
+                eps.cod_nome
+            FROM pex_cadastroestab_contato AS contato
+            LEFT JOIN pex_empresa_por_sindicato AS eps
+            ON contato.cod_tareffa = eps.cod_tareffa
   `;
 
     if (limit > 0) {
