@@ -13,7 +13,7 @@ const pool = new Pool({
 /// Função para buscar dados de tributações + contatos
 const getContatos = async (req, res) => {
     const limit = parseInt(req.query.limit) || 0;
-    const user = parseInt(req.query.user) || 0;
+    const user = req.query.user || "";
 
     let query = `
             SELECT 
@@ -36,11 +36,13 @@ const getContatos = async (req, res) => {
             ON contato.cod_tareffa = eps.cod_tareffa
   `;
 
+    const getUser = user.toString()
+
     if (limit > 0) {
         query += ` LIMIT ${limit}`;
     }
-    if (user > 0) {
-        query += `  WHERE codigoempresa= ${user}`;
+    if (user.length > 0) {
+        query += ` WHERE contato.cod_tareffa='${getUser}'`;
     }
 
     try {
@@ -48,7 +50,7 @@ const getContatos = async (req, res) => {
         res.status(200).json(result.rows);
     } catch (error) {
         console.error('Erro ao buscar tributações:', error);
-        res.status(500).json({ error: 'Erro ao buscar tributações' });
+        res.status(500).json({ error: 'Erro ao buscar tributações', error });
     }
 };
 
