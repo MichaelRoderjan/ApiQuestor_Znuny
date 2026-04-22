@@ -10,7 +10,6 @@ router.get('/', homeController.home)
 router.get('/contatos', questorController.getContatos);
 router.get('/tareffa', tareffa.getAllTareffa);
 
-
 //Rotas POST
 router.post('/enviar-email', emailController.enviarEmail);
 
