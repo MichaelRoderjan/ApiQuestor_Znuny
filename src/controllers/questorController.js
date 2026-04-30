@@ -46,7 +46,7 @@ const getContatos = async (req, res) => {
         contato.remessa_questor
     FROM pex_cadastroestab_contato AS contato
     LEFT JOIN pex_empresa_por_sindicato AS eps
-	    ON contato.cod_tareffa = eps.cod_tareffa;
+	    ON contato.cod_tareffa = eps.cod_tareffa
     `;
 
         if (user.length > 0) {
