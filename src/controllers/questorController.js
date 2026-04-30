@@ -1,3 +1,14 @@
+const { Pool } = require('pg');
+const redisClient = require('../config/redisClient');
+
+const pool = new Pool({
+    host: process.env.HOST_POSTGRESQL,
+    port: process.env.PORT_POSTGRESQL,
+    database: process.env.DATABASE_POSTGRESQL,
+    user: process.env.USER_POSTGRESQL,
+    password: process.env.PASSWORD_POSTGRESQL,
+});
+
 const getContatos = async (req, res) => {
     const limit = parseInt(req.query.limit) || 0;
     const ignoreCache = req.query.ignoreCache === 'true';
@@ -6,41 +17,39 @@ const getContatos = async (req, res) => {
     const cacheKey = `contatos:user:${user || 'todos'}:limit:${limit || 'sem_limit'}`;
 
     try {
-        // 🔥 Só usa cache se NÃO for ignorar
-        if (!ignoreCache) {
-            const cache = await redisClient.get(cacheKey);
+        const cache = await redisClient.get(cacheKey);
 
-            if (cache) {
-                return res.status(200).json({
-                    origem: 'redis',
-                    dados: JSON.parse(cache),
-                });
-            }
+        // Só usa cache se NÃO estiver ignorando
+        if (cache && !ignoreCache) {
+            return res.status(200).json({
+                origem: 'redis',
+                dados: JSON.parse(cache),
+            });
         }
 
         const params = [];
 
         let query = `
-            SELECT
-                contato.cod_tareffa,
-                contato.razao_social,
-                contato.tributacao,
-                contato.email_geral,
-                contato.email_fiscal,
-                contato.email_contabil,
-                contato.email_dp,
-                contato.email_societario,
-                contato.email_dp_crt_experiencia,
-                contato.email_financeiro,
-                contato.cnpj_cpf,
-                eps.codigo_sindicato,
-                eps.nome_sindicato,
-                eps.cod_nome,
-                contato.remessa_questor
-            FROM pex_cadastroestab_contato AS contato
-            LEFT JOIN pex_empresa_por_sindicato AS eps
-                ON contato.cod_tareffa = eps.cod_tareffa
-        `;
+      SELECT
+        contato.cod_tareffa,                 -- Antiga trib.codigoempresa
+        contato.razao_social,
+        contato.tributacao,                  -- Antiga trib.caracteristica
+        contato.email_geral,
+        contato.email_fiscal,
+        contato.email_contabil,
+        contato.email_dp,
+        contato.email_societario,
+        contato.email_dp_crt_experiencia,
+        contato.email_financeiro,
+        contato.cnpj_cpf,                   -- Antiga trib.inscrfederal
+        eps.codigo_sindicato,
+        eps.nome_sindicato,
+        eps.cod_nome,
+        contato.remessa_questor
+    FROM pex_cadastroestab_contato AS contato
+    LEFT JOIN pex_empresa_por_sindicato AS eps
+	    ON contato.cod_tareffa = eps.cod_tareffa
+    `;
 
         if (user.length > 0) {
             params.push(user);
@@ -54,15 +63,15 @@ const getContatos = async (req, res) => {
 
         const result = await pool.query(query, params);
 
-        // 💾 Atualiza cache SEMPRE (inclusive quando ignorou)
         await redisClient.setEx(
             cacheKey,
-            process.env.REDIS_CACHE_EXPIRATION,
+            process.env.REDIS_CACHE_EXPIRATION
+            ,
             JSON.stringify(result.rows)
         );
 
         return res.status(200).json({
-            origem: ignoreCache ? 'postgresql (forçado)' : 'postgresql',
+            origem: 'postgresql',
             dados: result.rows,
         });
 
@@ -74,4 +83,8 @@ const getContatos = async (req, res) => {
             detalhe: error.message,
         });
     }
+};
+
+module.exports = {
+    getContatos,
 };
