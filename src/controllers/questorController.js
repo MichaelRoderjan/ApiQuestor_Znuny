@@ -30,7 +30,7 @@ const getContatos = async (req, res) => {
         const params = [];
 
         let query = `
-      SELECT
+      select distinct
         contato.cod_tareffa,                 -- Antiga trib.codigoempresa
         contato.razao_social,
         contato.tributacao,                  -- Antiga trib.caracteristica
@@ -42,13 +42,13 @@ const getContatos = async (req, res) => {
         contato.email_dp_crt_experiencia,
         contato.email_financeiro,
         contato.cnpj_cpf,                   -- Antiga trib.inscrfederal
-        eps.codigo_sindicato,
+       /*eps.codigo_sindicato,
         eps.nome_sindicato,
-        eps.cod_nome,
+        eps.cod_nome,*/
         contato.remessa_questor
     FROM pex_cadastroestab_contato AS contato
-    LEFT JOIN pex_empresa_por_sindicato AS eps
-	    ON contato.cod_tareffa = eps.cod_tareffa
+                                        --  LEFT JOIN pex_empresa_por_sindicato AS eps
+	                                    --    ON contato.cod_tareffa = eps.cod_tareffa
     `;
 
         if (user.length > 0) {
