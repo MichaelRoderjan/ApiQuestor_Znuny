@@ -32,6 +32,10 @@ REDIS_HOST=
 REDIS_PORT=
 REDIS_PASSWORD=
 
+#Usuario e Senha para certificado
+CERT_USER=
+CERT_PASSWORD=
+
 #Adicionar o tempo de expiração do cache.
 # 300    -  5 minutos
 # 600    -  10 minutos

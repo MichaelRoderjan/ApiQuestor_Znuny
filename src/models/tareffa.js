@@ -6,6 +6,8 @@ function getUserLoginTareffa() {
         'TAREFFA_PASSWORD': process.env.TAREFFA_PASSWORD,
         'USERLOGIN': process.env.USERLOGIN,
         'PASSWORD': process.env.PASSWORD,
+        'CERT_USER': process.env.CERT_USER,
+        'CERT_PASSWORD': process.env.CERT_PASSWORD
     }
 
     return getAll
