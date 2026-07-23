@@ -6,3 +6,6 @@ node_modules/
 
 #ignorar 
 startServer.bat
+
+# Ignora arquivos locais de agentes
+agents/

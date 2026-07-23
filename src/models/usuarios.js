@@ -45,7 +45,6 @@ async function listarUsuarios() {
     }
 }
 
-
 //Remover usuário pelo ID
 async function removerUsuarios(id) {
     // Garantir que a tabela exista antes de inserir
@@ -95,7 +94,6 @@ async function buscarEmailPorUsuario(login) {
         console.error('Erro ao buscar email do usuário:', err);
     }
 }
-
 
 async function buscarEmailSenhaPorUsuario(login) {
     const query = `
